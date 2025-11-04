@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"  // genera cliente tipado
+}
+
+datasource db {
+  provider = "mysql"             // Prisma usa mysql para MariaDB
+  url      = env("DATABASE_URL") // centraliza credenciales
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id        String   @id @default(cuid())    // id único legible
+  email     String   @unique                 // unicidad: evita duplicados
+  name      String
+  role      Role     @default(USER)
+  password  String                           // hash (no guardar plain)
+  bookings  Booking[]
+  createdAt DateTime @default(now())         // auditoría
+  updatedAt DateTime @updatedAt              // optimistic locking simple
+  createdBy String
+  updatedBy String
+  isActive  Boolean
+}
+
+model Room {
+  id        String    @id @default(cuid())
+  name      String    @unique                // evita nombres duplicados
+  capacity  Int
+  isActive  Boolean
+  bookings  Booking[]
+  createdAt DateTime @default(now())         // auditoría
+  updatedAt DateTime @updatedAt              // optimistic locking simple
+  createdBy String
+  updatedBy String
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  startsAt  DateTime
+  endsAt    DateTime
+  note      String?
+  room      Room     @relation(fields: [roomId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())         // auditoría
+  updatedAt DateTime @updatedAt              // optimistic locking simple
+  createdBy String
+  updatedBy String
+
+  @@index([roomId, startsAt, endsAt])       // consultas por ventana de tiempo
+}

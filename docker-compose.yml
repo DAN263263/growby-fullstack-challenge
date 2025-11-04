@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  mariadb:
+    image: mariadb:10.11
+    environment:
+      MYSQL_ROOT_PASSWORD: root   # credenciales de dev (no prod)
+      MYSQL_DATABASE: appdb
+    ports:
+      - "3306:3306"               # expone mariaDB localmente
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - dbdata:/var/lib/mysql     # persistencia de datos en dev
+
+volumes:
+  dbdata:
