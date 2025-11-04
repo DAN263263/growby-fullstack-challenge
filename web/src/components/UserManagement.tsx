@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, TextField, List, ListItem, ListItemText, IconButton, Stack, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Box, Button, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, TextField, List, ListItem, ListItemText, IconButton, Stack, Typography, Select, MenuItem, FormControl, InputLabel, FormControlLabel, Checkbox } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useUsers } from "../hooks/useUsers";
@@ -7,8 +7,8 @@ import { useUserMutations } from "../hooks/useUsersMutation";
 import type { User } from "../types";
 
 export const UserManagement: React.FC<{ onChange?: () => void }> = ({ onChange }) => {
-  const { data, refetch, loading } = useUsers();
-  const { createUser, creating, updateUser, updating, deleteUser, deleting } = useUserMutations();
+  const { data, refetch } = useUsers();
+  const { createUser, creating, updateUser, updating, deleteUser } = useUserMutations();
 
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<User | null>(null);
@@ -16,6 +16,7 @@ export const UserManagement: React.FC<{ onChange?: () => void }> = ({ onChange }
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<string>("USER");
   const [name, setName] = useState("");
+  const [changePassword, setChangePassword] = useState(false);
 
   const openForCreate = () => {
     setEditing(null);
@@ -24,6 +25,7 @@ export const UserManagement: React.FC<{ onChange?: () => void }> = ({ onChange }
     setRole("USER");
     setOpen(true);
     setName("");
+    setChangePassword(false);
   };
 
   const openForEdit = (u: User) => {
@@ -33,6 +35,7 @@ export const UserManagement: React.FC<{ onChange?: () => void }> = ({ onChange }
     setRole(u.role);
     setOpen(true);
     setName(u.name);
+    setChangePassword(false);
   };
 
   const handleSave = async () => {
@@ -98,7 +101,35 @@ export const UserManagement: React.FC<{ onChange?: () => void }> = ({ onChange }
           <Box sx={{ mt: 1 }}>
             <TextField label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} fullWidth sx={{ mb: 2 }} />
             <TextField label="Nombre" type="text" value={name} onChange={e => setName(e.target.value)} fullWidth sx={{ mb: 2 }} />
-            <TextField label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} fullWidth sx={{ mb: 2 }} placeholder={editing ? "(dejar vacío para no cambiar)" : ""} />
+            
+            {editing && (
+              <FormControlLabel
+                control={
+                  <Checkbox 
+                    checked={changePassword} 
+                    onChange={(e) => {
+                      setChangePassword(e.target.checked);
+                      if (!e.target.checked) setPassword("");
+                    }} 
+                  />
+                }
+                label="Cambiar contraseña"
+                sx={{ mb: 1 }}
+              />
+            )}
+            
+            <TextField 
+              label="Password" 
+              type="password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              fullWidth 
+              sx={{ mb: 2 }} 
+              placeholder={editing ? "(dejar vacío para no cambiar)" : "Contraseña del usuario"}
+              disabled={!!(editing && !changePassword)}
+              helperText={editing && !changePassword ? "Active el checkbox para cambiar la contraseña" : ""}
+            />
+            
             <FormControl fullWidth>
               <InputLabel id="role-label">Rol</InputLabel>
               <Select labelId="role-label" label="Rol" value={role} onChange={e => setRole(e.target.value)}>

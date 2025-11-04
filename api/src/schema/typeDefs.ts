@@ -17,7 +17,7 @@ export const typeDefs = gql`
 
   input BookingInput { roomId: ID!, startsAt: String!, endsAt: String!, note: String }
   input RoomInput { name: String!, capacity: Int! }
-  input UserInput { email: String!, name: String!, role: Role!, password: String! }
+  input UserInput { email: String!, name: String!, role: Role!, password: String }
   type AuthPayload { token: String!, user: User! }
 
   type Mutation {
