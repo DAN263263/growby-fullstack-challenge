@@ -44,7 +44,8 @@ export const resolvers = {
     },
     bookings: async (_: any, args: { roomId?: string; from?: string; to?: string }) => {
       const where: any = {
-        room: { isActive: true }
+        room: { isActive: true },
+        endsAt: { gte: new Date() } // Solo mostrar reservas futuras o en curso
       };
       if (args.roomId) where.roomId = args.roomId;
       if (args.from || args.to) {
@@ -62,6 +63,12 @@ export const resolvers = {
     login: async (_: any, { email, password }: any, ctx: any) => {
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user) throw new AuthenticationError("Credenciales Invalidas");
+      
+      // Validar que el usuario esté activo
+      if (!user.isActive) {
+        throw new ForbiddenError("Su cuenta ha sido desactivada. Por favor, contacte al administrador.");
+      }
+      
       const bcrypt = await import("bcryptjs");
       const ok = await bcrypt.default.compare(password, user.password);
       if (!ok) throw new AuthenticationError("Credenciales Invalidas");

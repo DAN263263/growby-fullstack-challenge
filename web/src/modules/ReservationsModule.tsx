@@ -137,11 +137,11 @@ export const ReservationsModule: React.FC = () => {
                 <InputLabel id="room-filter-label">Sala</InputLabel>
                 <Select
                   labelId="room-filter-label"
-                  value={roomId ?? ""}
+                  value={roomId ?? "ALL"}
                   label="Sala"
-                  onChange={(e) => setRoomId(e.target.value === "" ? undefined : (e.target.value as string))}
+                  onChange={(e) => setRoomId(e.target.value === "ALL" ? undefined : (e.target.value as string))}
                 >
-                  <MenuItem value="">Todas las salas</MenuItem>
+                  <MenuItem value="ALL">Todas las salas</MenuItem>
                   {roomsData?.rooms?.map((r) => (<MenuItem key={r.id} value={r.id}>{r.name} ({r.capacity})</MenuItem>))}
                 </Select>
               </FormControl>
@@ -178,8 +178,8 @@ export const ReservationsModule: React.FC = () => {
           <Stack spacing={2} sx={{ mt: 1 }}>
             <FormControl fullWidth>
               <InputLabel id="edit-room-label">Sala</InputLabel>
-              <Select labelId="edit-room-label" label="Sala" value={editRoomId ?? ""} onChange={(e) => setEditRoomId(e.target.value === "" ? undefined : (e.target.value as string))}>
-                <MenuItem value="">(sin cambiar)</MenuItem>
+              <Select labelId="edit-room-label" label="Sala" value={editRoomId ?? "NONE"} onChange={(e) => setEditRoomId(e.target.value === "NONE" ? undefined : (e.target.value as string))}>
+                <MenuItem value="NONE">(sin cambiar)</MenuItem>
                 {roomsData?.rooms?.map((r) => (<MenuItem key={r.id} value={r.id}>{`${r.name} (${r.capacity})`}</MenuItem>))}
               </Select>
             </FormControl>

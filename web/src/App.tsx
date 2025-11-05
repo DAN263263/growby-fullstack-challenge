@@ -41,9 +41,8 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 type BookingsVars = { roomId?: string };
 
 function AppInner() {
-  const { isAuthenticated, login, logout, loading: authLoading } = useAuth();
+  const { isAuthenticated, login, logout, loading: authLoading, user, isAdmin } = useAuth();
   const [page, setPage] = useState<"login" | "reservations" | "rooms" | "users">(() => isAuthenticated ? "reservations" : "login");
-  const { isAdmin } = useAuth();
   
 
   const handleLogout = () => {
@@ -56,7 +55,11 @@ function AppInner() {
           <Avatar sx={{ bgcolor: "primary.main" }}>R</Avatar>
           <Box>
             <Typography variant="h5">Mini ERP – Reservas</Typography>
-            <Typography variant="caption" color="text.secondary">Admin Dashboard</Typography>
+            <Typography variant="caption" color="text.secondary">
+              {isAdmin 
+                ? (isAuthenticated && user ? `Admin Dashboard - ${user.email} - ${user.name}` : "Admin Dashboard") 
+                : (isAuthenticated && user ? `User Dashboard - ${user.email} - ${user.name}` : "User Dashboard")}
+            </Typography>
           </Box>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
