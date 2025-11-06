@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Chip, Divider, Typography, IconButton } from "@mui/material";
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, Typography, IconButton } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import PersonIcon from "@mui/icons-material/Person";
 import type { Booking } from "../types";

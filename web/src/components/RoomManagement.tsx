@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Card, CardContent, CardActions, Dialog, DialogTitle, DialogContent, DialogActions, TextField, List, ListItem, ListItemText, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, TextField, List, ListItem, ListItemText, IconButton, Stack, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRooms } from "../hooks/useRooms";
@@ -13,8 +13,8 @@ import type { Room } from "../types";
  * - delete con confirm
  */
 export const RoomManagement: React.FC<{ onChange?: () => void }> = ({ onChange }) => {
-  const { data, refetch, loading } = useRooms();
-  const { createRoom, creating, updateRoom, updating, deleteRoom, deleting } = useRoomMutations();
+  const { data, refetch } = useRooms();
+  const { createRoom, creating, updateRoom, updating, deleteRoom } = useRoomMutations();
 
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Room | null>(null);

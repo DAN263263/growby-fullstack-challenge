@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import {
-  Avatar,
   Button,
   Card,
   CardActions,
@@ -9,11 +8,9 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  IconButton,
   Stack,
   TextField,
   Typography,
-  Box,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -25,10 +22,6 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EventIcon from "@mui/icons-material/Event";
-import PersonIcon from "@mui/icons-material/Person";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import { useRooms } from "../hooks/useRooms";
 import { useBookings } from "../hooks/useBookings";
 import { useBookingMutations } from "../hooks/useBookingMutations";
@@ -44,7 +37,7 @@ export const ReservationsModule: React.FC = () => {
   const noteRef = useRef<HTMLInputElement | null>(null);
 
   const { data: bookingsData, refetch } = useBookings(roomId);
-  const { createBooking, creating, updateBooking, updating, deleteBooking, deleting } = useBookingMutations();
+  const { createBooking, creating, updateBooking, updating, deleteBooking } = useBookingMutations();
 
   const [editOpen, setEditOpen] = useState(false);
   const [editingBooking, setEditingBooking] = useState<Booking | null>(null);

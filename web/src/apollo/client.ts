@@ -1,12 +1,16 @@
 // Configura link HTTP y adjunta token JWT en cada request
-import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from "@apollo/client";
 
-const httpLink = createHttpLink({ uri: "http://localhost:4000/graphql" });
+const httpLink = new HttpLink({ uri: "http://localhost:4000/graphql" });
 
-const authLink = setContext((_, { headers }) => {
+const authLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem("token");
-  return { headers: { ...headers, authorization: token ? `Bearer ${token}` : "" } };
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : ""
+    }
+  });
+  return forward(operation);
 });
 
 export const client = new ApolloClient({

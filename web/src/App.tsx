@@ -1,7 +1,5 @@
-import { useMutation, useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
-import { RoomManagement } from "./components/RoomManagement";
-import ReservationsModule from "./modules/ReservationsModule";
+
+import {useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import ReservationsPage from "./pages/ReservationsPage";
 import RoomsPage from "./pages/RoomsPage";
@@ -9,39 +7,17 @@ import UsersPage from "./pages/UsersPage";
 import {
   Avatar,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  Chip,
-  CircularProgress,
   Container,
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Stack,
-  TextField,
   Typography,
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  Box
 } from "@mui/material";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-type BookingsVars = { roomId?: string };
 
 function AppInner() {
-  const { isAuthenticated, login, logout, loading: authLoading, user, isAdmin } = useAuth();
+  const { isAuthenticated, logout, user, isAdmin } = useAuth();
   const [page, setPage] = useState<"login" | "reservations" | "rooms" | "users">(() => isAuthenticated ? "reservations" : "login");
   
 
